@@ -234,11 +234,11 @@
 
 ;;; create buffer local settings for workspace reload based on mode hook
 
+
 (defun eglot-fsharp--set-workspace-args ()
   "Set a buffer local variable with the workspace settings for eglot."
-  (make-local-variable 'eglot-workspace-configuration)
-  (let ((settings-json (json-serialize eglot-fsharp-fsautocomplete-args)) )
-    (setq eglot-workspace-configuration settings-json )))
+  (setq-local eglot-workspace-configuration `(:fsharp ,eglot-fsharp-fsautocomplete-args))
+)
 
 ;;;###autoload
 (defun eglot-fsharp (interactive)
@@ -270,8 +270,6 @@ Ensure FsAutoComplete is installed (when called INTERACTIVE)."
          (not (equal (cadddr err) '(jsonrpc-error-message . "Could not find declaration")))))
     (when (cl-next-method-p)
       (cl-call-next-method))))
-
-
 
 (add-to-list 'eglot-server-programs `(fsharp-mode . eglot-fsharp))
 
